@@ -1,0 +1,110 @@
+<!--Mobile View-->
+<div *ngIf="restaurantData" class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-block d-sm-block d-md-none">
+          <img [src]="restaurantData.featured_image" class="card-img image-class" height="150px;" alt="...">
+      </div>
+      <div class="d-none d-md-block d-lg-none">
+          <img [src]="restaurantData.featured_image" class="card-img image-class" height="250px;" alt="...">
+      </div>
+      <div class="d-none d-lg-block d-xl-block">
+          <img [src]="restaurantData.featured_image" class="card-img image-class" height="350px;" alt="...">
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-10">
+            <h5 class="card-title text-danger">{{restaurantData.name}}</h5>
+          </div>
+          <div class="col-2">
+            <h4 *ngIf="restaurantData.user_rating.aggregate_rating >= 4.0"><span
+                class="badge badge-success">{{restaurantData.user_rating.aggregate_rating}}</span></h4>
+            <h4
+              *ngIf="restaurantData.user_rating.aggregate_rating >= 2.0 && restaurantData.user_rating.aggregate_rating < 4.0">
+              <span class="badge badge-warning">{{restaurantData.user_rating.aggregate_rating}}</span></h4>
+            <h4 *ngIf="restaurantData.user_rating.aggregate_rating < 2.0"><span
+                class="badge badge-danger">{{restaurantData.user_rating.aggregate_rating}}</span></h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-9">
+            <p class="card-text text-muted">{{restaurantData.cuisines}}</p>
+          </div>
+          <div class="col-3">
+            <h5 *ngIf="restaurantData.is_delivering_now == 1" class="mx-auto"><span
+                class="badge badge-success text-center">Open</span></h5>
+            <h5 *ngIf="restaurantData.is_delivering_now == 0" class="mx-auto"><span
+                class="badge badge-danger text-center">Closed</span></h5>
+          </div>
+        </div>
+        <a *ngIf="restaurantData.is_delivering_now == 1" [href]="restaurantData.order_url"
+          class="btn btn-danger btn-lg btn-block">Order from Zomato</a>
+        <div class="row padd">
+          <div class="col-6">
+            <p class="card-text text-center"><small>Timings:</small>
+              <span class="text-primary">
+                <p class="card-text text-danger">{{restaurantData.timings}}</p>
+              </span>
+            </p>
+          </div>
+          <div class="col-6">
+            <p class="card-text text-center"><small>Average cost for two:</small>
+              <span class="text-primary">
+                <p class="card-text text-danger">₹{{restaurantData.average_cost_for_two}}</p>
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="row" style="padding-bottom: 15px;">
+          <div class="col-6">
+            <p class="card-text text-center"><small>Phone Numbers:<br> </small>
+              <span class="text-primary">
+                <a href="callto:restaurantData.phone_numbers" class="text-danger">{{restaurantData.phone_numbers}}</a>
+              </span>
+            </p>
+          </div>
+          <div class="col-6">
+            <p class="card-text text-center"><small>Menu: <br></small>
+              <span class="text-primary">
+                <a [href]="restaurantData.menu_url" class="card-text text-danger">Explore</a>
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 mx-auto text-center">
+            <h6 class="text-muted text-center">Photos</h6>
+            <ngx-gallery class="img-padd" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+          </div>
+        </div>
+        <h6 style="margin-bottom: 20px" class="text-muted text-center">Reviews</h6>
+        <div class="shadow-sm p-3 mb-5 bg-white rounded card-padd"
+          *ngFor="let rev of restaurantData.all_reviews.reviews">
+
+          <div class="row">
+            <div class="col-3 col-sm-3 col-xs-3 col-md-6 rev-img-padd text-right">
+              <img [src]="rev.review.user.profile_image" class="mr-3 rounded-circle" width="55px" alt="...">
+            </div>
+            <div class="col-9 col-sm-9 col-xs-9 col-md-6">
+              <div class="row rev-name-padd mx-auto">
+                <h5 class="mt-0 mb-1">{{rev.review.user.name}}</h5>
+              </div>
+              <div class="row rev-star-padd mx-auto">
+                <star-rating *ngIf="rev.review.rating >= 4.0" style="padding-left: 5px;" [value]="rev.review.rating"
+                  checkedcolor="green" uncheckedcolor="white" size="24px" readonly="true"></star-rating>
+                <star-rating *ngIf="rev.review.rating < 4.0 && rev.review.rating >= 2.0" style="padding-left: 5px;"
+                  [value]="rev.review.rating" checkedcolor="orange" uncheckedcolor="white" size="24px" readonly="true">
+                </star-rating>
+                <star-rating *ngIf="rev.review.rating < 2.0" style="padding-left: 5px;" [value]="rev.review.rating"
+                  checkedcolor="red" uncheckedcolor="white" size="24px" readonly="true"></star-rating>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <small class="rev-padd mx-auto text-center">{{rev.review.review_text}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -21,7 +21,11 @@
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
     "core-js": "^2.5.4",
-    "rxjs": "^6.0.0",
+    "font-awesome": "^4.7.0",
+    "hammerjs": "^2.0.8",
+    "ngx-openlayers": "^0.8.22",
+    "ngx-spinner": "^8.0.1",
+    "rxjs": "6.0.0",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

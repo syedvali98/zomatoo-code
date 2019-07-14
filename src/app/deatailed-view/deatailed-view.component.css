@@ -1,0 +1,26 @@
+.image-class{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+.padd{
+    padding: 12px 0;
+}
+.rev-padd{
+    padding: 8px;
+}
+.rev-img-padd{
+    padding: 15px;
+}
+.rev-name-padd{
+    padding-top: 20px;
+}
+.rev-star-padd{
+    margin-top: -8px;
+}
+.card-padd{
+    margin-top: -40px;
+}
+.img-padd{
+    margin-bottom: 35px;
+}

@@ -1,0 +1,221 @@
+<!--Search Bar-->
+<div class="container-fluid">
+  <div class="row bg-danger">
+    <div class="col-sm-12 col-md-6 mx-auto">
+      <div class="input-group mb-3 padd">
+        <input type="text" class="form-control border-right-0 border-danger" (input)="searchRestaurants($event)"
+          placeholder="Search Restaurants" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-light btn-outline-danger border-left-0" type="button" id="button-addon2"><i><img
+                src="https://image.flaticon.com/icons/svg/54/54481.svg" width="18px;"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="locationObtained" class="">
+  <!--Mobile Card-->
+  <div class="container" *ngIf="!searchResult">
+    <div class="row">
+      <div class="d-block d-sm-block d-md-none" *ngIf="restaurantData">
+        <div class="alert alert-light text-center" role="alert">
+          Showing Restaurants near {{restaurantData.location.title}}
+          <div class="col-12 mx-auto text-center">
+            <a (click)="changeLocation()" class="mx-auto text-center text-danger text-decoration-none">Change
+              Location</a>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-12 mx-auto" *ngFor="let rest of restaurantData.nearby_restaurants">
+          <a class="text-decoration-none" [routerLink]="['/restaurant',rest.restaurant.id]">
+            <div class="media padd">
+              <img *ngIf="rest.restaurant.thumb" [src]="rest.restaurant.thumb" class="mr-3" width="90px" alt="...">
+              <img *ngIf="!rest.restaurant.thumb"
+                src="https://www.wellplated.com/wp-content/uploads/2017/09/Healthy-Paneer-Tikka-Masala-recipe-600x616.jpg"
+                class="mr-3" width="90px" alt="...">
+              <div class="media-body">
+                <h5 class="mt-0">{{rest.restaurant.name}}</h5>
+                <div class="row" style="margin: -7px 0;">
+                  <star-rating *ngIf="rest.restaurant.user_rating.aggregate_rating >= 4.0" style="padding-left: 5px;"
+                    [value]="rest.restaurant.user_rating.aggregate_rating" checkedcolor="green" uncheckedcolor="white"
+                    size="24px" readonly="true"></star-rating>
+                  <star-rating
+                    *ngIf="rest.restaurant.user_rating.aggregate_rating < 4.0 && rest.restaurant.user_rating.aggregate_rating >= 2.0"
+                    style="padding-left: 5px;" [value]="rest.restaurant.user_rating.aggregate_rating"
+                    checkedcolor="orange" uncheckedcolor="white" size="24px" readonly="true"></star-rating>
+                  <star-rating *ngIf="rest.restaurant.user_rating.aggregate_rating < 2.0" style="padding-left: 5px;"
+                    [value]="rest.restaurant.user_rating.aggregate_rating" checkedcolor="red" uncheckedcolor="white"
+                    size="24px" readonly="true"></star-rating>
+
+                  <p class="text-muted" style="padding-top: 5px;">({{rest.restaurant.user_rating.aggregate_rating}})</p>
+                </div>
+                <p class="card-text"><small class="text-muted">{{rest.restaurant.location.locality_verbose}}</small></p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Mobile Search Card-->
+  <div class="container" *ngIf="searchResult">
+    <div *ngIf="searchResult.results_found == 0" class="row">
+      <div class="col-12 mx-auto text-center">
+        <div class="alert alert-light text-center" role="alert">
+          No Restaurants Found.
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="d-block d-sm-block d-md-none" *ngIf="searchResult">
+        <div class="col-sm-12 col-md-12 mx-auto" *ngFor="let rest of searchResult.restaurants">
+          <a class="text-decoration-none" [routerLink]="['/restaurant',rest.restaurant.id]">
+            <div class="media padd">
+              <img *ngIf="rest.restaurant.thumb" [src]="rest.restaurant.thumb" class="mr-3" width="90px" alt="...">
+              <img *ngIf="!rest.restaurant.thumb"
+                src="https://www.wellplated.com/wp-content/uploads/2017/09/Healthy-Paneer-Tikka-Masala-recipe-600x616.jpg"
+                class="mr-3" width="90px" alt="...">
+              <div class="media-body">
+                <h5 class="mt-0">{{rest.restaurant.name}}</h5>
+                <div class="row" style="margin: -7px 0;">
+                  <star-rating *ngIf="rest.restaurant.user_rating.aggregate_rating >= 4.0" style="padding-left: 5px;"
+                    [value]="rest.restaurant.user_rating.aggregate_rating" checkedcolor="green" uncheckedcolor="white"
+                    size="24px" readonly="true"></star-rating>
+                  <star-rating
+                    *ngIf="rest.restaurant.user_rating.aggregate_rating < 4.0 && rest.restaurant.user_rating.aggregate_rating >= 2.0"
+                    style="padding-left: 5px;" [value]="rest.restaurant.user_rating.aggregate_rating"
+                    checkedcolor="orange" uncheckedcolor="white" size="24px" readonly="true"></star-rating>
+                  <star-rating *ngIf="rest.restaurant.user_rating.aggregate_rating < 2.0" style="padding-left: 5px;"
+                    [value]="rest.restaurant.user_rating.aggregate_rating" checkedcolor="red" uncheckedcolor="white"
+                    size="24px" readonly="true"></star-rating>
+
+                  <p class="text-muted" style="padding-top: 5px;">({{rest.restaurant.user_rating.aggregate_rating}})</p>
+                </div>
+                <p class="card-text"><small class="text-muted">{{rest.restaurant.location.locality_verbose}}</small></p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Desktop Card-->
+  <div class="container" *ngIf="!searchResult">
+    <div *ngIf="restaurantData" class="row">
+      <div class="col-12 d-none d-sm-none d-md-block mx-auto">
+        <div class="alert alert-light text-center" role="alert">
+          Showing Restaurants near {{restaurantData.location.title}}
+          <div class="col-12 mx-auto text-center">
+            <a (click)="changeLocation()" class="mx-auto text-center text-danger text-decoration-none">Change
+              Location</a>
+          </div>
+        </div>
+      </div>
+      <div *ngFor="let rest of restaurantData.nearby_restaurants" class="col-6 d-none d-sm-none d-md-block">
+        <a class="text-decoration-none" [routerLink]="['/restaurant',rest.restaurant.id]">
+          <div class="card mb-3" style="max-width: 540px;">
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <img *ngIf="rest.restaurant.thumb" [src]="rest.restaurant.thumb" class="card-img" alt="...">
+                <img *ngIf="!rest.restaurant.thumb"
+                  src="https://www.wellplated.com/wp-content/uploads/2017/09/Healthy-Paneer-Tikka-Masala-recipe-600x616.jpg"
+                  class="card-img" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{rest.restaurant.name}}</h5>
+                  <div class="row">
+                    <star-rating *ngIf="rest.restaurant.user_rating.aggregate_rating >= 4.0" style="padding-left: 16px;"
+                      [value]="rest.restaurant.user_rating.aggregate_rating" checkedcolor="green" uncheckedcolor="white"
+                      size="24px" readonly="true"></star-rating>
+                    <star-rating
+                      *ngIf="rest.restaurant.user_rating.aggregate_rating < 4.0 && rest.restaurant.user_rating.aggregate_rating >= 2.0"
+                      style="padding-left: 16px;" [value]="rest.restaurant.user_rating.aggregate_rating"
+                      checkedcolor="orange" uncheckedcolor="white" size="24px" readonly="true"></star-rating>
+                    <star-rating *ngIf="rest.restaurant.user_rating.aggregate_rating < 2.0" style="padding-left: 16px;"
+                      [value]="rest.restaurant.user_rating.aggregate_rating" checkedcolor="red" uncheckedcolor="white"
+                      size="24px" readonly="true"></star-rating>
+                    <p class="text-muted" style="padding-top: 6px;">({{rest.restaurant.user_rating.aggregate_rating}})
+                    </p>
+                  </div>
+                  <p class="card-text"><small class="text-muted">{{rest.restaurant.location.locality_verbose}}</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!--Desktop Search Card-->
+  <div class="container" *ngIf="searchResult">
+    <div *ngIf="searchResult" class="row">
+      <div *ngFor="let rest of searchResult.restaurants" class="col-6 d-none d-sm-none d-md-block">
+        <a class="text-decoration-none" [routerLink]="['/restaurant',rest.restaurant.id]">
+          <div class="card mb-3" style="max-width: 540px;">
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <img *ngIf="rest.restaurant.thumb" [src]="rest.restaurant.thumb" class="card-img" alt="...">
+                <img *ngIf="!rest.restaurant.thumb"
+                  src="https://www.wellplated.com/wp-content/uploads/2017/09/Healthy-Paneer-Tikka-Masala-recipe-600x616.jpg"
+                  class="card-img" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{rest.restaurant.name}}</h5>
+                  <div class="row">
+                    <star-rating *ngIf="rest.restaurant.user_rating.aggregate_rating >= 4.0" style="padding-left: 16px;"
+                      [value]="rest.restaurant.user_rating.aggregate_rating" checkedcolor="green" uncheckedcolor="white"
+                      size="24px" readonly="true"></star-rating>
+                    <star-rating
+                      *ngIf="rest.restaurant.user_rating.aggregate_rating < 4.0 && rest.restaurant.user_rating.aggregate_rating >= 2.0"
+                      style="padding-left: 16px;" [value]="rest.restaurant.user_rating.aggregate_rating"
+                      checkedcolor="orange" uncheckedcolor="white" size="24px" readonly="true"></star-rating>
+                    <star-rating *ngIf="rest.restaurant.user_rating.aggregate_rating < 2.0" style="padding-left: 16px;"
+                      [value]="rest.restaurant.user_rating.aggregate_rating" checkedcolor="red" uncheckedcolor="white"
+                      size="24px" readonly="true"></star-rating>
+                    <p class="text-muted" style="padding-top: 6px;">({{rest.restaurant.user_rating.aggregate_rating}})
+                    </p>
+                  </div>
+                  <p class="card-text"><small class="text-muted">{{rest.restaurant.location.locality_verbose}}</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Location Detecting-->
+<div class="container loc-padd" *ngIf="!locationObtained">
+  <div class="row">
+    <div class="col-sm-12 col-md-6 mx-auto">
+      <div class="input-group mb-3">
+        <input [(ngModel)]="locationName" type="text" class="form-control border border-danger" placeholder="Enter Location Manually">
+        <div class="input-group-append">
+          <button class="btn btn-outline-danger" (click)="submitLocation()" type="button"
+            id="button-addon2">submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="mx-auto text-center text-muted"><br>or<br></p>
+  <div class="row">
+    <div class="col-12">
+      <div class="mx-auto text-center">
+        <a (click)="getCurrentLocation()" class="btn btn-outline-danger mx-auto text-center">Auto-Detect &nbsp;<i><img
+              src="https://image.flaticon.com/icons/svg/60/60834.svg" width="15px;"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner></ngx-spinner>
