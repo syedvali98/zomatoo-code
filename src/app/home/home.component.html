@@ -13,6 +13,11 @@
     </div>
   </div>
 </div>
+<div *ngIf="loading" class="d-flex justify-content-center">
+  <div class="spinner-border text-danger" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
 
 <div *ngIf="locationObtained" class="">
   <!--Mobile Card-->
@@ -218,4 +223,3 @@
     </div>
   </div>
 </div>
-<ngx-spinner></ngx-spinner>

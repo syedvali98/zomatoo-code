@@ -14,13 +14,12 @@ import { CookieService } from 'ngx-cookie-service';
 import { HttpService } from './http.service';
 import 'hammerjs';
 import { NgxGalleryModule } from 'ngx-gallery';
-import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    DeatailedViewComponent,
+    DeatailedViewComponent, 
     ErrorComponent
   ],
   imports: [
@@ -28,7 +27,6 @@ import { NgxSpinnerModule } from "ngx-spinner";
     HttpClientModule,
     FormsModule,
     RatingModule,
-    NgxSpinnerModule,
     NgxGalleryModule,
     RouterModule.forRoot([
       {path:'home',component:HomeComponent},

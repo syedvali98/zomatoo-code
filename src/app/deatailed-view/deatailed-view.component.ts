@@ -12,12 +12,14 @@ export class DeatailedViewComponent implements OnInit {
 
   res_id;
   restaurantData;
+  loading;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
 
   constructor(private httpService: HttpService, private _route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+    this.loading = true;
     this._route.paramMap.subscribe(
       params => {
         this.res_id = params.get('res_id');
@@ -53,7 +55,7 @@ export class DeatailedViewComponent implements OnInit {
           };
           this.galleryImages.push(newImages);
         }
-        console.log(data);
+        this.loading = false;
       },
       error => {
         console.log(error)

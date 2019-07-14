@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../http.service';
 import { CookieService } from 'ngx-cookie-service';
-import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-home',
@@ -14,16 +13,18 @@ export class HomeComponent implements OnInit {
   currLng;
   restaurantData;
   search;
+  loading;
   searchResult;
   locationName;
   locationNameResult;
   locationObtained = false;
-  constructor(private httpService: HttpService, private cookieService: CookieService,private spinner: NgxSpinnerService) { }
+  constructor(private httpService: HttpService, private cookieService: CookieService) { }
 
   ngOnInit() {
-    this.spinner.show();
+    this.loading = true;
     if(this.cookieService.get('latitude') === null || this.cookieService.get('latitude') === '' || this.cookieService.get('latitude') === undefined){
       this.locationObtained = false;
+      this.loading = false;
     }
     else{
       this.locationObtained = true;
@@ -55,16 +56,17 @@ export class HomeComponent implements OnInit {
       data => {
         this.restaurantData = data;
         this.locationObtained = true;
-        this.spinner.hide();
+        this.loading = false;
       },
       error => {
         console.log(error);
         this.locationObtained = false;
-        this.spinner.hide();
+        this.loading = false;
       }
     )
   }
   searchRestaurants(event: Event) {
+    this.loading = true;
     this.search = (<HTMLInputElement>event.target).value;
     if (this.search.length < 2) {
       this.searchResult = undefined;
@@ -74,10 +76,11 @@ export class HomeComponent implements OnInit {
       this.httpService.searchnearbyRestaurants(this.currLat, this.currLng, this.search).subscribe(
         data => {
           this.searchResult = data;
-          this.spinner.hide();
+          this.loading = false;
         },
         error => {
           console.log(error);
+          this.loading = false;
         }
 
       )
@@ -87,6 +90,7 @@ export class HomeComponent implements OnInit {
     this.locationObtained = false;
   }
   getCurrentLocation() {
+    this.loading = true;
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
 
@@ -99,7 +103,6 @@ export class HomeComponent implements OnInit {
     }
     else {
       alert("Geolocation is not supported by this browser.");
-      this.spinner.hide();
     }
   }
 }
